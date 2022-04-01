@@ -1,8 +1,20 @@
 import React from "react";
 import { Route, Link } from "react-router-dom"
 import { useHistory } from "react-router-dom";
+import { useState } from "react";
 
 const App = () => {
+  let [formValues, setFormValues] = useState({nameinput: ""})
+
+  const change = (evt) => {
+    const { name, value } = evt.target
+
+    setFormValues({...formValues, [name]: value})
+
+    console.log("SPAGHETTI")
+  }
+
+
 const history = useHistory()
   
 
@@ -26,6 +38,14 @@ const history = useHistory()
       <Route path = "/pizza">
         <form id="pizza-form">
 
+        <input 
+        value={formValues.nameinput}
+        type="text"
+        name = "nameinput"
+        id = "name-input" 
+        onChange={change}
+
+        />
 
 
 
