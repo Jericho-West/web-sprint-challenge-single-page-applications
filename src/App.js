@@ -70,6 +70,7 @@ if (disabled) {
       <Route path = "/pizza">
         <form id="pizza-form">
 
+        <label>Name: </label>
         <input 
         value={formValues.nameinput}
         type="text"
@@ -79,13 +80,51 @@ if (disabled) {
         placeholder="name"
         />
 
+        <select id="size-dropdown">
+          <option value = "Small">Small</option>
+          <option value = "Medium">Medium</option>
+          <option value = "Large">Large</option>
+        </select>
+        
+        <label>Pepperoni</label>
+        <input
+        type="checkbox" 
+        name="pepperoni"
+        value="pepperoni"
+        />
+                <label>Mushroom</label>
+        <input
+        type="checkbox" 
+        name="mushroom"
+        value="mushroom"
+        />
+                <label>Pineapple</label>
+        <input
+        type="checkbox" 
+        name="pineapple"
+        value="pineapple"
+        />
+                <label>Salt</label>
+        <input
+        type="checkbox" 
+        name="salt"
+        value="salt"
+        />
 
+<label>Special Instructions: </label>
+        <input 
+        value={formValues.seinput}
+        type="text"
+        name = "specialtext"
+        id = "special-text" 
+        onChange={change}
+        placeholder="type here"
+        />
 
+<input type="button" value="Add to Order" disabled={disabled} />
 
-
-<input type="submit" value="Submit" disabled={disabled} />
         </form>
-        <div class="pancake">{pancake}</div>
+        <div className="pancake">{pancake}</div>
       </Route>
     </>
   );
