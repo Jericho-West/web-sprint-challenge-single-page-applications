@@ -2,25 +2,57 @@ import React from "react";
 import { Route, Link } from "react-router-dom"
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import schema from "./fs";
+import * as yup from "yup"
+import axios from "axios";
+import { useEffect } from "react";
 
 const App = () => {
+  const ife= {
+    nameinput: ""
+  }
+
   let [formValues, setFormValues] = useState({nameinput: ""})
+  let [formErrors, setFormErrors] = useState(ife)
+  let [disabled, setDisabled] = useState(false)
+
+  const validate = (name, value) => {
+    yup.reach(schema, name)
+    .validate(value)
+    .then(() => setFormErrors({...formErrors, [name]: ""}))
+    .catch(err => setFormErrors({...formErrors, [name]: err.errors[0]}))
+  }
 
   const change = (evt) => {
     const { name, value } = evt.target
+    validate(name, value)
 
-    setFormValues({...formValues, [name]: value})
+    setFormValues(
+      {...formValues, [name]: value}
+      )
+}
 
-    console.log("SPAGHETTI")
-  }
 
 
+useEffect (() => {
+schema.isValid(formValues).then(x => setDisabled(!x))
+}, [formValues])
+
+
+  
 const history = useHistory()
   
-
   const pizza = () => {
     history.push("/pizza")
   }
+
+let pancake = false
+
+if (disabled) {
+  pancake = "name must be at least 2 characters"
+} else {
+  pancake = ""
+}
 
   return (
     <>
@@ -44,15 +76,16 @@ const history = useHistory()
         name = "nameinput"
         id = "name-input" 
         onChange={change}
-
+        placeholder="name"
         />
 
 
 
 
 
-
+<input type="submit" value="Submit" disabled={disabled} />
         </form>
+        <div class="pancake">{pancake}</div>
       </Route>
     </>
   );
