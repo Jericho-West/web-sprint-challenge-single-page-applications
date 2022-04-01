@@ -9,12 +9,16 @@ import { useEffect } from "react";
 
 const App = () => {
   const ife= {
-    nameinput: ""
+    nameinput: "",
+    specialtext: ""
   }
 
-  let [formValues, setFormValues] = useState({nameinput: ""})
+  let [formValues, setFormValues] = useState({nameinput: "", specialtext: "", pepperoni: false, mushroom: false, pineapple: false, salt: false, size: "small"})
   let [formErrors, setFormErrors] = useState(ife)
   let [disabled, setDisabled] = useState(false)
+  let [post, setPost] = useState([])
+
+
 
   const validate = (name, value) => {
     yup.reach(schema, name)
@@ -30,6 +34,23 @@ const App = () => {
     setFormValues(
       {...formValues, [name]: value}
       )
+}
+
+const change2 = (evt) => {
+  const { name, value } = evt.target 
+  let wot = value
+
+  setFormValues(
+    {...formValues, [name]: !!wot}
+    )
+}
+
+const change3 = (evt) => {
+  const { name, value } = evt.target 
+
+  setFormValues(
+    {...formValues, [name]: value}
+    )
 }
 
 
@@ -53,6 +74,31 @@ if (disabled) {
 } else {
   pancake = ""
 }
+
+const sub = () => {
+  const newPost = {
+name: formValues.nameinput.trim(),
+size: formValues.size,
+pepperoni: formValues.pepperoni,
+mushroom: formValues.mushroom,
+pineapple: formValues.pineapple,
+salt: formValues.salt,
+special: formValues.specialtext.trim()
+  }
+
+  postNew(newPost)
+}
+
+const postNew = new0 => {
+  axios.post("https://reqres.in/api/orders", new0)
+ .then(x => {
+ setPost(x.data, ...formValues)
+ })
+ .catch(err => console.log(err))
+ .finally(() => setFormValues(ife), [])
+}
+
+
 
   return (
     <>
@@ -80,7 +126,7 @@ if (disabled) {
         placeholder="name"
         />
 
-        <select id="size-dropdown">
+        <select id="size-dropdown" value="s" onChange={change3}>
           <option value = "Small">Small</option>
           <option value = "Medium">Medium</option>
           <option value = "Large">Large</option>
@@ -91,29 +137,33 @@ if (disabled) {
         type="checkbox" 
         name="pepperoni"
         value="pepperoni"
+        onChange={change2}
         />
                 <label>Mushroom</label>
         <input
         type="checkbox" 
         name="mushroom"
         value="mushroom"
+        onChange={change2}
         />
                 <label>Pineapple</label>
         <input
         type="checkbox" 
         name="pineapple"
         value="pineapple"
+        onChange={change2}
         />
                 <label>Salt</label>
         <input
         type="checkbox" 
         name="salt"
         value="salt"
+        onChange={change2}
         />
 
 <label>Special Instructions: </label>
         <input 
-        value={formValues.seinput}
+        value={formValues.specialtext}
         type="text"
         name = "specialtext"
         id = "special-text" 
@@ -121,7 +171,7 @@ if (disabled) {
         placeholder="type here"
         />
 
-<input type="button" value="Add to Order" disabled={disabled} />
+<input type="button" value="Add to Order" disabled={disabled} onSubmit={console.log("a")} />
 
         </form>
         <div className="pancake">{pancake}</div>
