@@ -20,6 +20,7 @@ describe("Pizza test, sprint 3 challenge", () => {
     expect(history.location.pathname).toBe('/')
     const orderPizza = document.querySelector('#order-pizza')
     expect(orderPizza).toBeInTheDocument();
+    console.log(orderPizza)
   })
 
   it('From homepage "/" route, click #order-pizza, navigate to "/pizza" route', () => {
