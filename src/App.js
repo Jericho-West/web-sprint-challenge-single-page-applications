@@ -13,7 +13,7 @@ const App = () => {
     specialtext: ""
   }
 
-  let [formValues, setFormValues] = useState({nameinput: "", specialtext: "", pepperoni: false, mushroom: false, pineapple: false, salt: false, size: "small"})
+  let [formValues, setFormValues] = useState({nameinput: "", specialtext: "", pepperoni: false, mushroom: false, pineapple: false, salt: false, size: "Small"})
   let [formErrors, setFormErrors] = useState(ife)
   let [disabled, setDisabled] = useState(false)
   let [post, setPost] = useState([])
@@ -38,10 +38,9 @@ const App = () => {
 
 const change2 = (evt) => {
   const { name, value } = evt.target 
-  let wot = value
 
   setFormValues(
-    {...formValues, [name]: !!wot}
+    {...formValues, [name]: !!value}
     )
 }
 
@@ -75,31 +74,48 @@ if (disabled) {
   pancake = ""
 }
 
-const sub = () => {
-  const newPost = {
+const sub = (a) => {
+
+  let newPost = {
 name: formValues.nameinput.trim(),
-size: formValues.size,
-pepperoni: formValues.pepperoni,
-mushroom: formValues.mushroom,
-pineapple: formValues.pineapple,
-salt: formValues.salt,
-special: formValues.specialtext.trim()
+size: "Small",
+pepperoni: false,
+mushroom: false,
+pineapple: false,
+salt: false,
+special: ""
   }
+
+  newPost = {
+    name: formValues.nameinput.trim(),
+    size: formValues.size,
+    pepperoni: formValues.pepperoni,
+    mushroom: formValues.mushroom,
+    pineapple: formValues.pineapple,
+    salt: formValues.salt,
+    special: formValues.specialtext.trim()
+      }
 
   postNew(newPost)
 }
 
-const postNew = new0 => {
-  axios.post("https://reqres.in/api/orders", new0)
+
+
+const postNew = (newPost0) => {
+
+  axios.post(`https://reqres.in/api/orders`, newPost0)
  .then(x => {
- setPost(x.data, ...formValues)
+ setPost(x.data)
  })
  .catch(err => console.log(err))
  .finally(() => setFormValues(ife), [])
 }
 
+const z = (e) => {
+  e.preventDefault()
+}
 
-
+console.log(post)
   return (
     <>
       <h1>Lambda Eats</h1>
@@ -126,9 +142,9 @@ const postNew = new0 => {
         placeholder="name"
         />
 
-        <select id="size-dropdown" value="s" onChange={change3}>
-          <option value = "Small">Small</option>
-          <option value = "Medium">Medium</option>
+        <select id="size-dropdown" value={formValues.size} name="size" onChange={change3}>
+          <option value = "Small" >Small</option>
+          <option value = "Medium" >Medium</option>
           <option value = "Large">Large</option>
         </select>
         
@@ -171,10 +187,12 @@ const postNew = new0 => {
         placeholder="type here"
         />
 
-<input type="button" value="Add to Order" disabled={disabled} onSubmit={console.log("a")} />
+<button type="button" name="submit" value="Add to Order" id="order-button" disabled={disabled} onClick={sub} onSubmit={z}>Submit</button>
 
         </form>
         <div className="pancake">{pancake}</div>
+
+        <pre>{JSON.stringify(post, null, 2)}</pre>
       </Route>
     </>
   );
